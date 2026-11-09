@@ -8,12 +8,15 @@ from machine import Pin, PWM
 from time import sleep_ms, ticks_ms, ticks_us, ticks_diff, ticks_add
 
 # Index 0-3 is green, red, yellow, blue. Each tuple uses this order.
-LED_GPIOS = (18, 17, 9, 8)  # A0, A1, A2, A3
-BUTTON_GPIOS = (35, 37, 36, 16)  # MOSI, MISO, SCK, RX
+LED_GPIOS = (17, 8, 18, 9)  # A0, A1, A2, A3
+BUTTON_GPIOS = (35, 16, 37, 36)  # MOSI, MISO, SCK, RX
 TONES = (415, 310, 252, 209)  # Hz
 BUZZER_GPIO = 7  # SDA
 
 LOSE_TONE = 120  # Hz
+# LED index for each score bit, from the lowest bit: red, blue, green, yellow.
+SCORE_BIT_LEDS = (1, 3, 0, 2)
+SCORE_SHOW_MS = 5000
 INPUT_TIMEOUT_MS = 3000  # time the player has for each press
 DEBOUNCE_MS = 30
 
@@ -62,10 +65,10 @@ def play(index, on_ms):
 def step_times(length):
     """Return (on, off) times in ms. The sequence speeds up as it grows."""
     if length <= 5:
-        return 420, 80
+        return 420, 96
     if length <= 13:
-        return 320, 60
-    return 220, 50
+        return 320, 72
+    return 220, 60
 
 
 def show_sequence(sequence):
@@ -130,6 +133,15 @@ def lose(expected):
     sleep_ms(1000)
 
 
+def show_score(score):
+    """Show the score in binary on the LEDs. A score above 15 shows as 15."""
+    score = min(score, 15)
+    for bit, index in enumerate(SCORE_BIT_LEDS):
+        leds[index].value((score >> bit) & 1)
+    sleep_ms(SCORE_SHOW_MS)
+    set_all_leds(0)
+
+
 def start_signal():
     set_all_leds(1)
     sleep_ms(400)
@@ -156,6 +168,7 @@ try:
         start_signal()
         score = play_game()
         print("Game over. Score:", score)
+        show_score(score)
 finally:
     # Stop the tone and LEDs when you interrupt the program (Ctrl-C or Stop).
     tone_off()

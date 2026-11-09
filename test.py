@@ -5,9 +5,9 @@
 from machine import Pin, PWM
 from time import sleep_ms
 
-NAMES = ("green", "red", "yellow", "blue")
+NAMES = ("yellow", "green", "blue", "red")
 LED_GPIOS = (18, 17, 9, 8)  # A0, A1, A2, A3
-BUTTON_GPIOS = (35, 37, 36, 16)  # MOSI, MISO, SCK, RX
+BUTTON_GPIOS = (37, 35, 36, 16)  # MOSI, MISO, SCK, RX
 TONES = (415, 310, 252, 209)  # Hz
 BUZZER_GPIO = 7  # SDA
 

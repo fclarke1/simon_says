@@ -128,6 +128,7 @@ The score shows in the MicroPico terminal after each game.
 3. The board plays the sequence. Each colour has its own tone: green 415 Hz, red 310 Hz, yellow 252 Hz, blue 209 Hz.
 4. Repeat the sequence on the buttons. The LED and its tone stay on while you hold a button.
 5. A wrong button, or no press for 3 seconds, ends the game. The board plays a low tone and flashes the LED that you had to press.
+6. The LEDs show the score in binary for 5 seconds. Red is the lowest bit (1), then blue (2), green (4), and yellow (8). For example, a score of 5 turns on red and green. A score above 15 shows as 15 (all LEDs on).
 
 The sequence plays faster after round 5 and again after round 13.
 
